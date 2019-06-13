@@ -1,6 +1,6 @@
 class Cell {
     constructor(x, y, w) {
-        this.mined = true;
+        this.mined = false;
         this.revealed = false;
         this.x = x;
         this.y = y;
@@ -35,6 +35,15 @@ class Cell {
     Reveal(){
         this.revealed = true;
     }
+
+    //ser the cell as mined
+    MineIt(){
+       this.mined = true; 
+    }
+   
+    IsMined(){
+        return this.mined;
+     }
 }
 
 
