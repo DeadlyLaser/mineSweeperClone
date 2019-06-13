@@ -7,7 +7,7 @@ class Cell {
         this.cellWidht = w;
         this.x = this.i * this.cellWidht;
         this.y = this.j * this.cellWidht;
-        this.mineNear = 1;
+        this.nearMines = 0;
     }
     // draw the cell on the screen
     Show() {
@@ -26,11 +26,11 @@ class Cell {
             else {
                 fill(200);
                 rect(this.x, this.y, this.cellWidht, this.cellWidht);
-                if (this.mineNear > 0) {
+                if (this.nearMines > 0) {
                     textSize(30);
                     fill(0);
                     textAlign(CENTER);
-                    text(this.mineNear, this.x + this.cellWidht / 2, this.y + this.cellWidht - 12);
+                    text(this.nearMines, this.x + this.cellWidht / 2, this.y + this.cellWidht - 12);
                 }
 
             }
@@ -54,7 +54,30 @@ class Cell {
     IsMined() {
         return this.mined;
     }
+    // count near mines and assign to nearMines
+    countNearMines() {
+        let nm = 0;
+        if (this.mined) {
+            return -1;
+        }
+        for (let xDiff = -1; xDiff <= 1; xDiff++) {
+            for (let yDiff = -1; yDiff <= 1; yDiff++) {
+                let i = this.i + xDiff;
+                let j = this.j + yDiff;
+                if (i > -1 && i < cols && j > -1 && j < rows)
+                    if (grid[i][j].IsMined()) {
+                        nm++;
+                    }
+            }
+
+        }
+
+        this.nearMines = nm;
+    }
 }
+
+
+
 
 
 

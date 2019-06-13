@@ -18,23 +18,32 @@ function setup() {
 
   for (let i = 0; i < cols; i++) {
     for (let j = 0; j < rows; j++) {
-      grid[i][j] = new Cell(i , j , cellWidht);
-      console.log(grid);
+      grid[i][j] = new Cell(i, j, cellWidht);
     }
   }
 
   // set bombs in random spots
   let i = 0;
-  while (i < mineMun){
+  while (i < mineMun) {
     let n = floor(random(cols));
     let m = floor(random(rows));
 
-    if (!grid[n][m].IsMined()){
+    if (!grid[n][m].IsMined()) {
       grid[n][m].MineIt();
       i++;
     }
   }
+
+  // set nearMines property for each cell.
+  for (let i = 0; i < cols; i++) {
+    for (let j = 0; j < rows; j++) {
+      grid[i][j].countNearMines();
+    }
+  }
 }
+
+
+
 
 function draw() {
   background(255);
