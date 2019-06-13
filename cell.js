@@ -40,12 +40,6 @@ class Cell {
     OnTheCell(x, y) {
         return (x > this.x && x < this.x + this.cellWidht && y > this.y && y < this.y + this.cellWidht);
     }
-
-    //reveal the cell
-    Reveal() {
-        this.revealed = true;
-    }
-
     //set the cell as mined
     MineIt() {
         this.mined = true;
@@ -58,23 +52,45 @@ class Cell {
     countNearMines() {
         let nm = 0;
         if (this.mined) {
-            return -1;
+            this.nearMines = -1;
+            return;
         }
         for (let xDiff = -1; xDiff <= 1; xDiff++) {
             for (let yDiff = -1; yDiff <= 1; yDiff++) {
                 let i = this.i + xDiff;
                 let j = this.j + yDiff;
-                if (i > -1 && i < cols && j > -1 && j < rows)
+                if (i > -1 && i < cols && j > -1 && j < rows){
                     if (grid[i][j].IsMined()) {
                         nm++;
                     }
+                }
             }
-
         }
-
         this.nearMines = nm;
     }
+
+    //reveal the cell and near empty cells if near mines is 0
+    Reveal() {
+        this.revealed = true;
+        
+        if(this.nearMines == 0){
+            for (let xDiff = -1; xDiff <= 1; xDiff++) {
+                for (let yDiff = -1; yDiff <= 1; yDiff++) {
+                    let i = this.i + xDiff;
+                    let j = this.j + yDiff;
+                    if (i > -1 && i < cols && j > -1 && j < rows){
+                        let nearCell = grid[i][j];
+                        if (!nearCell.mined && !nearCell.revealed) {
+                            nearCell.Reveal();
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
+
+
 
 
 
