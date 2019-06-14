@@ -47,48 +47,68 @@ class Cell {
     // return true if the cell is mined, false if its not
     IsMined() {
         return this.mined;
+
     }
-    // count near mines and assign to nearMines
-    countNearMines() {
-        let nm = 0;
-        if (this.mined) {
-            this.nearMines = -1;
-            return;
-        }
-        for (let xDiff = -1; xDiff <= 1; xDiff++) {
-            for (let yDiff = -1; yDiff <= 1; yDiff++) {
-                let i = this.i + xDiff;
-                let j = this.j + yDiff;
-                if (i > -1 && i < cols && j > -1 && j < rows){
-                    if (grid[i][j].IsMined()) {
-                        nm++;
-                    }
+
+    // game over function
+
+    gameOver() {
+        for (let i = 0; i < cols; i++) {
+            for (let j = 0; j < rows; j++) {
+                if (grid[i][j].IsMined() && !grid[i][j].revealed) {
+                    grid[i][j].Reveal();
                 }
             }
         }
-        this.nearMines = nm;
     }
 
-    //reveal the cell and near empty cells if near mines is 0
-    Reveal() {
-        this.revealed = true;
-        
-        if(this.nearMines == 0){
+        // count near mines and assign to nearMines
+        countNearMines() {
+            let nm = 0;
+            if (this.mined) {
+                this.nearMines = -1;
+                return;
+            }
             for (let xDiff = -1; xDiff <= 1; xDiff++) {
                 for (let yDiff = -1; yDiff <= 1; yDiff++) {
                     let i = this.i + xDiff;
                     let j = this.j + yDiff;
-                    if (i > -1 && i < cols && j > -1 && j < rows){
-                        let nearCell = grid[i][j];
-                        if (!nearCell.mined && !nearCell.revealed) {
-                            nearCell.Reveal();
+                    if (i > -1 && i < cols && j > -1 && j < rows) {
+                        if (grid[i][j].IsMined()) {
+                            nm++;
+                        }
+                    }
+                }
+            }
+            this.nearMines = nm;
+        }
+
+
+
+        //reveal the cell and near empty cells if near mines is 0
+        Reveal() {
+            this.revealed = true;
+
+            if (this.mined) {
+                this.gameOver();
+            }
+
+            if (this.nearMines == 0) {
+                for (let xDiff = -1; xDiff <= 1; xDiff++) {
+                    for (let yDiff = -1; yDiff <= 1; yDiff++) {
+                        let i = this.i + xDiff;
+                        let j = this.j + yDiff;
+                        if (i > -1 && i < cols && j > -1 && j < rows) {
+                            let nearCell = grid[i][j];
+                            if (!nearCell.mined && !nearCell.revealed) {
+                                nearCell.Reveal();
+                            }
                         }
                     }
                 }
             }
         }
     }
-}
 
 
 
