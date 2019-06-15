@@ -1,4 +1,4 @@
 # mineSweeperClone
-A simple MineSweepwer clone. i am learnng js, don't take offence at the code.
+A simple MineSweepwer clone. learning exercise
 
 https://deadlylaser.github.io/mineSweeperClone/
