@@ -5,8 +5,8 @@ var cols = 0;
 var canvasSize = 510;
 var cellWidht = 50;
 var grid;
-var mineN;
-var mineMun = 10;
+var numberOfMines = 10;
+var uncoveredCells = 0;
 
 function setup() {
   createCanvas(canvasSize, canvasSize);
@@ -19,12 +19,13 @@ function setup() {
   for (let i = 0; i < cols; i++) {
     for (let j = 0; j < rows; j++) {
       grid[i][j] = new Cell(i, j, cellWidht);
+      uncoveredCells++;
     }
   }
 
   // set bombs in random spots
   let i = 0;
-  while (i < mineMun) {
+  while (i < numberOfMines) {
     let n = floor(random(cols));
     let m = floor(random(rows));
 
@@ -58,8 +59,9 @@ function draw() {
 function mousePressed() {
   for (let i = 0; i < cols; i++) {
     for (let j = 0; j < rows; j++) {
-      if (grid[i][j].OnTheCell(mouseX, mouseY)) {
+      if (grid[i][j].OnTheCell(mouseX, mouseY) && !grid[i][j].revealed) {
         grid[i][j].Reveal();
+        grid[i][j].Turn();
       }
     }
   }
